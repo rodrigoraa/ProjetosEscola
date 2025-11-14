@@ -1,58 +1,70 @@
 <?php
-// ATUALIZADO: ../app/
 require_once '../app/protecao_login.php';
 require_once '../app/conexao.php';
 
 $mensagem = '';
 
-// --- ATUALIZADO: Processamento POST com Verificação ---
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    
     $nome_completo = trim($_POST['nome_completo']);
     $data_nascimento = $_POST['data_nascimento'];
     $id_turma = $_POST['id_turma'];
+    $data_vencimento_dva = $_POST['data_vencimento_dva'];
+    $observacao_dva = trim($_POST['observacao_dva']);
 
-    // 1. Validação básica (campos vazios)
     if (empty($nome_completo) || empty($data_nascimento) || empty($id_turma)) {
-        $mensagem = '<p class="error-message">Todos os campos são obrigatórios!</p>';
+        $mensagem = '<p class="error-message">Nome, Data de Nascimento e Turma são obrigatórios!</p>';
     } else {
-        
-        // --- INÍCIO DA NOVA VERIFICAÇÃO ---
         try {
-            // 2. Verifica se o aluno já existe
+            $pdo->beginTransaction();
+
+            // 1. Verifica se o aluno já existe
             $sql_check = "SELECT COUNT(*) FROM alunos WHERE nome_completo = ? AND data_nascimento = ?";
             $stmt_check = $pdo->prepare($sql_check);
             $stmt_check->execute([$nome_completo, $data_nascimento]);
             $count = $stmt_check->fetchColumn();
 
             if ($count > 0) {
-                // 3. Se existir, mostra o erro
-                $mensagem = '<p class="error-message">Erro: Já existe um aluno cadastrado com este nome e data de nascimento!</p>';
-            } else {
-                // 4. Se não existir, insere o novo aluno
-                $sql = "INSERT INTO alunos (nome_completo, data_nascimento, id_turma) VALUES (?, ?, ?)";
-                $stmt = $pdo->prepare($sql);
-                $stmt->execute([$nome_completo, $data_nascimento, $id_turma]);
-                $mensagem = '<p class="success-message">Aluno cadastrado com sucesso!</p>';
+                throw new Exception("Já existe um aluno cadastrado com este nome e data de nascimento!");
             }
-        } catch (PDOException $e) { 
-            $mensagem = '<p class="error-message">Erro ao interagir com o banco de dados: ' . $e->getMessage() . '</p>'; 
+            
+            // 2. Insere o Aluno
+            $sql_aluno = "INSERT INTO alunos (nome_completo, data_nascimento, id_turma) VALUES (?, ?, ?)";
+            $stmt_aluno = $pdo->prepare($sql_aluno);
+            $stmt_aluno->execute([$nome_completo, $data_nascimento, $id_turma]);
+            $id_novo_aluno = $pdo->lastInsertId();
+
+            // 3. Insere a DVA (se a data foi fornecida)
+            if (!empty($data_vencimento_dva)) {
+                
+                // <<< MUDANÇA IMPORTANTE AQUI
+                // Usa "INSERT OR REPLACE" para garantir que só exista uma DVA
+                $sql_dva = "INSERT OR REPLACE INTO dvas 
+                                (id_aluno, id_usuario_registro, data_vencimento, observacao) 
+                            VALUES (?, ?, ?, ?)";
+                // >>> FIM DA MUDANÇA
+                
+                $stmt_dva = $pdo->prepare($sql_dva);
+                $stmt_dva->execute([$id_novo_aluno, $usuario_id_logado, $data_vencimento_dva, $observacao_dva]);
+            }
+
+            $pdo->commit();
+            $mensagem = '<p class="success-message">Aluno cadastrado com sucesso!</p>';
+
+        } catch (Exception $e) {
+            $pdo->rollBack();
+            $mensagem = '<p class="error-message">Erro ao cadastrar: ' . $e->getMessage() . '</p>'; 
         }
-        // --- FIM DA NOVA VERIFICAÇÃO ---
     }
 }
-// --- FIM DO PROCESSAMENTO POST ---
 
-
-// --- (Buscar Turmas - Sem alterações) ---
+// ... (O resto do arquivo, GET para buscar turmas e o HTML, continua O MESMO) ...
 try {
     $query_turmas = $pdo->query("SELECT * FROM turmas ORDER BY nome_turma");
     $turmas = $query_turmas->fetchAll();
 } catch (PDOException $e) { 
     $turmas = [];
-    // Adiciona ao $mensagem se já não houver uma mensagem de POST
-    if(empty($mensagem)) {
-        $mensagem = '<p class="error-message">Erro ao carregar turmas: ' . $e->getMessage() . '</p>';
-    }
+    if(empty($mensagem)) { $mensagem = '<p class="error-message">Erro ao carregar turmas: ' . $e->getMessage() . '</p>'; }
 }
 ?>
 <!DOCTYPE html>
@@ -60,7 +72,8 @@ try {
 <head>
     <meta charset="UTF-8">
     <title>Cadastrar Aluno</title>
-    <link rel="stylesheet" href="../assets/css/style.css"> </head>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
 <body>
     <header><h1>Cadastro de Aluno</h1></header>
     
@@ -83,6 +96,7 @@ try {
         <?php echo $mensagem; ?>
         
         <form action="cadastrar_aluno.php" method="POST" class="sistema">
+            <h2>Dados do Aluno</h2>
             <div>
                 <label for="nome">Nome Completo:</label>
                 <input type="text" id="nome" name="nome_completo" required>
@@ -102,7 +116,24 @@ try {
                     <?php endforeach; ?>
                 </select>
             </div>
-            <div><button type="submit">Cadastrar Aluno</button></div>
+            
+            <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;">
+            
+            <h2>Dados da DVA (Opcional)</h2>
+            <p>Preencha os campos abaixo para registrar a primeira DVA deste aluno.</p>
+            
+            <div>
+                <label for="data_vencimento_dva">Data de Vencimento da DVA:</label>
+                <input type="date" id="data_vencimento_dva" name="data_vencimento_dva">
+            </div>
+            <div>
+                <label for="observacao_dva">Observações da DVA:</label>
+                <textarea id="observacao_dva" name="observacao_dva" rows="3"></textarea>
+            </div>
+
+            <div>
+                <button type="submit">Cadastrar Aluno (e DVA)</button>
+            </div>
         </form>
     </main>
 </body>
