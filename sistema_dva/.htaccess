@@ -1,0 +1,2 @@
+# Impede o acesso direto aos ficheiros desta pasta
+Deny from all

@@ -1,0 +1,291 @@
+/* ============================================= */
+/* == ARQUIVO DE ESTILO PRINCIPAL (COMPLETO) == */
+/* ============================================= */
+
+/* --- 1. Configurações Gerais (Corpo da Página) --- */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+    background-color: #f4f7f6; /* Fundo cinza-claro */
+    color: #333;
+}
+
+/* --- 2. Cabeçalho Principal (Azul Escuro) --- */
+header {
+    background-color: #004a91;
+    color: white;
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+header h1 {
+    margin: 0;
+    font-size: 1.5em;
+}
+
+/* --- 3. Barra de Navegação (Branca, com Sombra) --- */
+nav {
+    background-color: #ffffff; /* Fundo branco */
+    padding: 15px 30px;
+    border-bottom: 1px solid #ddd;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Sombra sutil */
+    display: flex;
+    align-items: center;
+    gap: 20px; /* Espaço entre os links */
+    flex-wrap: wrap; /* Permite que os links quebrem a linha em telas pequenas */
+}
+nav a {
+    text-decoration: none;
+    color: #007bff; /* Azul primário */
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+nav a:hover {
+    color: #004a91; /* Azul escuro no hover */
+}
+nav a.logout {
+    color: #d9534f;
+}
+/* Alinha o "Olá, Usuário!" e "Sair" à direita */
+nav span {
+    margin-left: auto; /* Mágica do Flexbox */
+    color: #555;
+    font-size: 0.9em;
+}
+nav a.logout {
+    margin-left: 10px;
+}
+
+
+/* --- 4. Conteúdo Principal --- */
+main {
+    padding: 30px;
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+/* --- 5. "Cards" (Tabelas e Formulários) --- */
+/* Este é o novo estilo para os "cards" brancos */
+.relatorio,
+form.sistema {
+    background-color: #ffffff;
+    border-radius: 12px; /* Cantos mais arredondados */
+    border: none; /* Remove a borda antiga */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Sombra moderna */
+    padding: 30px;
+    margin-bottom: 30px;
+}
+
+/* --- 6. Estilos de Tabela (Dentro dos Cards .relatorio) --- */
+.relatorio h3 {
+    margin: 0 0 20px 0;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+.relatorio table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.relatorio th, .relatorio td {
+    padding: 15px; /* Mais espaçamento */
+    text-align: left;
+    border-bottom: 1px solid #f0f0f0; /* Borda de linha mais suave */
+}
+.relatorio th {
+    background-color: #f9f9f9; /* Fundo do cabeçalho leve */
+    font-weight: 600;
+    color: #333;
+    font-size: 0.9em;
+    text-transform: uppercase; /* Deixa os títulos em maiúsculo */
+    letter-spacing: 0.5px;
+}
+.relatorio tr:last-child td {
+    border-bottom: none;
+}
+.relatorio tr:hover {
+    background-color: #fdfdfd; /* Hover quase imperceptível */
+}
+
+/* Links de Ação (Editar/Apagar) */
+td.col-acoes a {
+    text-decoration: none;
+    margin-right: 12px;
+    font-weight: 600;
+    font-size: 0.9em;
+}
+td.col-acoes a.editar { color: #007bff; }
+td.col-acoes a.apagar { color: #d9534f; }
+
+
+/* --- 7. Estilos de Formulário (Novos Campos) --- */
+form.sistema div,
+.sistema div { /* Pega divs dentro de forms e as de pesquisa */
+    margin-bottom: 20px;
+}
+form.sistema label,
+.sistema label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+/* O NOVO ESTILO DOS CAMPOS DE INPUT */
+.sistema input[type="text"],
+.sistema input[type="search"],
+.sistema input[type="date"],
+.sistema input[type="email"],
+.sistema input[type="password"],
+.sistema select,
+.sistema textarea,
+input[type="search"].sistema /* Pega os campos de pesquisa fora de forms */
+{
+    width: 100%;
+    padding: 12px;
+    box-sizing: border-box; 
+    border: 1px solid #ddd;
+    border-radius: 8px; /* Cantos arredondados */
+    font-size: 1em;
+    background-color: #f9f9f9; /* Fundo levemente cinza */
+    transition: all 0.3s ease;
+}
+
+/* Efeito de Foco (quando clica no campo) */
+.sistema input[type="text"]:focus,
+.sistema input[type="search"]:focus,
+.sistema input[type="date"]:focus,
+.sistema input[type="email"]:focus,
+.sistema input[type="password"]:focus,
+.sistema select:focus,
+.sistema textarea:focus,
+input[type="search"].sistema:focus
+{
+    outline: none;
+    border-color: #007bff; /* Azul primário */
+    background-color: #fff;
+    box-shadow: 0 0 0 3px rgba(0,123,255,0.15); /* "Brilho" azul */
+}
+
+/* Ajuste para selects com scroll (ex: cadastro de DVA) */
+.sistema select[size] {
+    height: 150px;
+}
+
+/* O NOVO ESTILO DOS BOTÕES */
+.sistema button {
+    padding: 12px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: 700;
+    transition: all 0.3s ease;
+}
+.sistema button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px); /* Efeito de "levantar" */
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+.sistema a.cancelar {
+    margin-left: 10px;
+    text-decoration: none;
+    color: #555;
+    font-weight: 500;
+}
+
+/* --- 8. Mensagens de Alerta (Sucesso/Erro) --- */
+p.error-message,
+p.success-message {
+    padding: 14px;
+    border-radius: 8px;
+    font-weight: 500;
+    border: 1px solid;
+    margin-bottom: 20px;
+}
+p.error-message {
+    color: #d9534f;
+    background-color: #fdf2f2;
+    border-color: #f5c6cb;
+}
+p.success-message {
+    color: #006b0d;
+    background-color: #f0fff3;
+    border-color: #c3e6cb;
+}
+
+/* --- 9. Estilos Específicos do Painel (Cores) --- */
+.status-vencida { background-color: #fff2f2; }
+.status-vencida td { color: #a60000; }
+.status-avencer { background-color: #fffcf2; }
+.status-avencer td { color: #a67c00; }
+.status-vigente { color: #006b0d; font-weight: 500; }
+
+/* --- 10. TELA DE LOGIN (O código que já fizemos) --- */
+body.login-container {
+    display: grid;
+    place-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+form.login {
+    width: 380px;
+    padding: 40px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    border: none;
+}
+form.login h2 {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 25px;
+    font-size: 1.9em;
+    font-weight: 700;
+    color: #004a91;
+}
+form.login label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 0.9em;
+    color: #555;
+}
+form.login input[type="email"],
+form.login input[type="password"] {
+    width: 100%;
+    padding: 14px 12px;
+    box-sizing: border-box; 
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1em;
+    background-color: #f9f9f9;
+    transition: all 0.3s ease;
+}
+form.login input[type="email"]:focus,
+form.login input[type="password"]:focus {
+    outline: none;
+    border-color: #007bff;
+    background-color: #fff;
+    box-shadow: 0 0 0 3px rgba(0,123,255,0.15);
+}
+form.login button {
+    width: 100%;
+    padding: 14px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1em;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+form.login button:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}

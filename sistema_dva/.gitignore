@@ -1,0 +1,42 @@
+# =========================================================
+# Arquivo .gitignore para o Projeto DVA (PHP + SQLite)
+# =========================================================
+
+# --- O MAIS IMPORTANTE: O BANCO DE DADOS ---
+# Nunca envie seus dados (alunos, senhas, etc.) para o GitHub.
+# Isso ignora o banco de dados principal e seus arquivos temporários.
+database/escola.db
+database/*.db-journal
+database/*.db-wal
+database/*.db-shm
+
+# --- ARQUIVOS DE DEPENDÊNCIAS (Boa Prática) ---
+# Se um dia você usar o Composer (gerenciador de pacotes PHP),
+# esta linha impedirá o envio da pasta 'vendor'.
+/vendor/
+
+# --- ARQUIVOS DE LOG E TEMPORÁRIOS ---
+*.log
+*.tmp
+*.bak
+*.swp
+
+# --- ARQUIVOS DE IDE E SISTEMA OPERACIONAL ---
+# (Ignora pastas e arquivos de configuração do seu editor de código)
+
+# Visual Studio Code
+.vscode/
+
+# JetBrains (PHPStorm, etc)
+.idea/
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+desktop.ini
