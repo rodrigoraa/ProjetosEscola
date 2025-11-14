@@ -9,7 +9,7 @@ database/escola.db
 database/*.db-journal
 database/*.db-wal
 database/*.db-shm
-
+.importar
 # --- ARQUIVOS DE DEPENDÊNCIAS (Boa Prática) ---
 # Se um dia você usar o Composer (gerenciador de pacotes PHP),
 # esta linha impedirá o envio da pasta 'vendor'.
