@@ -60,13 +60,13 @@ try {
     <nav>
         <a href="../painel.php">Início (Painel)</a>
         <a href="../aluno/cadastrar_aluno.php">Cadastrar Aluno</a>
-        <a href="cadastrar_dva.php">Cadastrar DVA</a>
+        <a href="../dva/cadastrar_dva.php">Cadastrar DVA</a>
         <a href="../aluno/gerenciar_alunos.php" style="font-weight: bold;">Gerenciar Alunos</a>
         <a href="../passivo/gerenciar_passivo.php" style="font-weight: bold; color: #004a91;">Arquivo Passivo</a>
         
         <?php if ($tipo_usuario_logado == 'admin'): ?>
-            <a href="../usuario/gerenciar_usuarios.php" style="color: #d9534f; font-weight: bold;">Gerenciar Usuários</a>
-        <?php endif; ?>
+            <a href="../usuario/gerenciar_usuarios.php" style="color: #d9534f;">Gerenciar Usuários</a>
+            <a href="../admin/backup.php" style="color: #d9534f; font-weight: bold;">Backup</a> <?php endif; ?>
         
         <span>Olá, <?php echo htmlspecialchars($nome_usuario_logado); ?>!</span>
         <a href="../logout.php" class="logout" style="float: right;">Sair</a>
