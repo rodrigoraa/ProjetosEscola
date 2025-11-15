@@ -1,40 +1,31 @@
 <?php
+require_once 'app/conexao.php';
 session_start();
 $mensagem_erro = '';
 
-// Se o usuário JÁ está logado, redireciona para o painel
-if (isset($_SESSION['usuario_id'])) {
-    header('Location: painel.php'); // Correto (painel.php está na raiz)
-    exit();
-}
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    require_once 'app/conexao.php'; // Correto (app/ está na raiz)
-    
-    $email = $_POST['email'];
-    $senha_form = $_POST['senha'];
+    $email = trim($_POST['email']);
+    $senha = $_POST['senha'];
 
-    if (empty($email) || empty($senha_form)) {
-        $mensagem_erro = "Por favor, preencha o email e a senha.";
+    if (empty($email) || empty($senha)) {
+        $mensagem_erro = "E-mail e senha são obrigatórios.";
     } else {
         try {
-            $sql = "SELECT * FROM usuarios WHERE email = ?";
-            $stmt = $pdo->prepare($sql);
+            $stmt = $pdo->prepare("SELECT * FROM usuarios WHERE email = ?");
             $stmt->execute([$email]);
             $usuario = $stmt->fetch();
 
-            if ($usuario && password_verify($senha_form, $usuario['senha'])) {
+            if ($usuario && password_verify($senha, $usuario['senha'])) {
                 $_SESSION['usuario_id'] = $usuario['id'];
                 $_SESSION['usuario_nome'] = $usuario['nome'];
                 $_SESSION['usuario_tipo'] = $usuario['tipo'];
-                
-                header('Location: painel.php'); // Correto
+                header("Location: painel.php");
                 exit();
             } else {
-                $mensagem_erro = "Email ou senha inválidos.";
+                $mensagem_erro = "E-mail ou senha inválidos.";
             }
         } catch (PDOException $e) {
-            $mensagem_erro = "Erro no banco de dados. Tente novamente.";
+            $mensagem_erro = "Erro no banco de dados: " . $e->getMessage();
         }
     }
 }
@@ -43,24 +34,44 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Login - Sistema de DVAs</title>
-    <link rel="stylesheet" href="assets/css/style.css"> </head>
+    <title>Login - Sistema DVA</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
 <body class="login-container">
-    <form action="login.php" method="POST" class="login"> <h2>Acesso ao Sistema</h2>
+    <form action="login.php" method="POST" class="login">
+        <h2>Acesso ao Sistema</h2>
         <?php if (!empty($mensagem_erro)): ?>
             <p class="error-message"><?php echo $mensagem_erro; ?></p>
         <?php endif; ?>
         <div>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
+            <label for="email">E-mail:</label>
+            <input type="email" id="email" name="email" required autofocus>
         </div>
+
         <div>
             <label for="senha">Senha:</label>
-            <input type="password" id="senha" name="senha" required>
+            <div style="position: relative;">
+                <input type="password" id="senha" name="senha" required style="padding-right: 45px;">
+                <span id="togglePassword" style="position: absolute; right: 12px; top: 15px; cursor: pointer; user-select: none;">👁️</span>
+            </div>
         </div>
         <div>
             <button type="submit">Entrar</button>
         </div>
     </form>
+
+    <script>
+        const togglePassword = document.getElementById('togglePassword');
+        const password = document.getElementById('senha');
+
+        togglePassword.addEventListener('click', function () {
+            // Alterna o tipo do input
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            
+            // Alterna o ícone
+            this.textContent = type === 'password' ? '👁️' : '🙈';
+        });
+    </script>
 </body>
 </html>

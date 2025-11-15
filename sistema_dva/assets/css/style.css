@@ -252,8 +252,13 @@ form.login label {
     font-size: 0.9em;
     color: #555;
 }
+
+/* ============================================= */
+/* (CORREÇÃO 1 APLICADA AQUI) */
+/* ============================================= */
 form.login input[type="email"],
-form.login input[type="password"] {
+form.login input[type="password"],
+form.login input[type="text"] {
     width: 100%;
     padding: 14px 12px;
     box-sizing: border-box; 
@@ -263,13 +268,19 @@ form.login input[type="password"] {
     background-color: #f9f9f9;
     transition: all 0.3s ease;
 }
+
+/* ============================================= */
+/* (CORREÇÃO 2 APLICADA AQUI) */
+/* ============================================= */
 form.login input[type="email"]:focus,
-form.login input[type="password"]:focus {
+form.login input[type="password"]:focus,
+form.login input[type="text"]:focus {
     outline: none;
     border-color: #007bff;
     background-color: #fff;
     box-shadow: 0 0 0 3px rgba(0,123,255,0.15);
 }
+
 form.login button {
     width: 100%;
     padding: 14px;
