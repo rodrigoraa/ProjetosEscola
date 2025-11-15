@@ -66,7 +66,6 @@ main {
 }
 
 /* --- 5. "Cards" (Tabelas e Formulários) --- */
-/* Este é o novo estilo para os "cards" brancos */
 .relatorio,
 form.sistema {
     background-color: #ffffff;
@@ -86,11 +85,14 @@ form.sistema {
 .relatorio table {
     width: 100%;
     border-collapse: collapse;
+    table-layout: fixed; /* Força larguras fixas */
 }
 .relatorio th, .relatorio td {
     padding: 15px; /* Mais espaçamento */
     text-align: left;
     border-bottom: 1px solid #f0f0f0; /* Borda de linha mais suave */
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 .relatorio th {
     background-color: #f9f9f9; /* Fundo do cabeçalho leve */
@@ -116,6 +118,19 @@ td.col-acoes a {
 }
 td.col-acoes a.editar { color: #007bff; }
 td.col-acoes a.apagar { color: #d9534f; }
+
+/* (Larguras Específicas para tabelas) */
+/* Painel (4 colunas) */
+.painel-tabelas th:nth-child(1), .painel-tabelas td:nth-child(1) { width: 40%; } /* Aluno */
+.painel-tabelas th:nth-child(2), .painel-tabelas td:nth-child(2) { width: 25%; } /* Turma */
+.painel-tabelas th:nth-child(3), .painel-tabelas td:nth-child(3) { width: 17%; } /* Vencimento */
+.painel-tabelas th:nth-child(4), .painel-tabelas td:nth-child(4) { width: 18%; } /* Ações */
+/* Arquivo Passivo (5 colunas) */
+.passivo-tabela th:nth-child(1), .passivo-tabela td:nth-child(1) { width: 10%; } /* Caixa */
+.passivo-tabela th:nth-child(2), .passivo-tabela td:nth-child(2) { width: 40%; } /* Nome Completo */
+.passivo-tabela th:nth-child(3), .passivo-tabela td:nth-child(3) { width: 15%; } /* Data Nasc. */
+.passivo-tabela th:nth-child(4), .passivo-tabela td:nth-child(4) { width: 15%; } /* Número */
+.passivo-tabela th:nth-child(5), .passivo-tabela td:nth-child(5) { width: 20%; } /* Ações */
 
 
 /* --- 7. Estilos de Formulário (Novos Campos) --- */
@@ -170,6 +185,16 @@ input[type="search"].sistema:focus
 .sistema select[size] {
     height: 150px;
 }
+
+/* ============================================= */
+/* (CORREÇÃO APLICADA AQUI) */
+/* ============================================= */
+.sistema select[size] option {
+    padding: 5px; /* Adiciona espaço vertical */
+    font-size: 1.05em; /* Aumenta um pouco a fonte */
+}
+/* ============================================= */
+
 
 /* O NOVO ESTILO DOS BOTÕES */
 .sistema button {
@@ -253,9 +278,7 @@ form.login label {
     color: #555;
 }
 
-/* ============================================= */
-/* (CORREÇÃO 1 APLICADA AQUI) */
-/* ============================================= */
+/* (Regras Corrigidas para "Ver Senha") */
 form.login input[type="email"],
 form.login input[type="password"],
 form.login input[type="text"] {
@@ -269,9 +292,7 @@ form.login input[type="text"] {
     transition: all 0.3s ease;
 }
 
-/* ============================================= */
-/* (CORREÇÃO 2 APLICADA AQUI) */
-/* ============================================= */
+/* (Regras Corrigidas para "Ver Senha" - Foco) */
 form.login input[type="email"]:focus,
 form.login input[type="password"]:focus,
 form.login input[type="text"]:focus {
